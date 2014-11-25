@@ -26,6 +26,9 @@ public class HandDance extends ApplicationAdapter {
     float accelX;
     float accelY;
     float accelZ;
+    float rot;
+    String mesg;
+    float time;
     
     @Override
     public void create() {        
@@ -45,14 +48,25 @@ public class HandDance extends ApplicationAdapter {
 
     @Override
     public void render() {        
-         accelX = 10*Gdx.input.getAccelerometerX();
-         accelY = 10*Gdx.input.getAccelerometerY();
-         accelZ = 10*Gdx.input.getAccelerometerZ();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+        time += Gdx.graphics.getDeltaTime();
+        
         batch.begin();
-        font.draw(batch, Math.round(accelX)+","+Math.round(accelY)+","+Math.round(accelZ), 200, 300);
+        if(time>=1){
+            accelX = Gdx.input.getAzimuth();
+            accelY = Gdx.input.getPitch();
+            accelZ = Gdx.input.getRoll();
+            rot = Gdx.input.getRotation();
+        mesg = "";
+        mesg += Math.round(accelX) + "\n";
+        mesg += Math.round(accelY) + "\n";
+        mesg += Math.round(accelZ) + "\n";
+        mesg += Math.round(rot) + "\n";
+        time--;
+        }
+        font.drawMultiLine(batch, "" + mesg, 100, 400);
         batch.end();
     }
 
